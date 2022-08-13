@@ -90,3 +90,12 @@ exports.deleteAd = async (req, res) => {
     res.status(500).json({ message: err });
   }
 };
+
+exports.searchPhrase = async (req, res) => {
+  try {
+    const ad = await Ad.find({ $text: { $search: req.params.searchPhrase } });
+    res.json(ad);
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+};
