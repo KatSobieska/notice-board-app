@@ -1,4 +1,4 @@
-const Ad = require("./models/ads.model");
+const Ad = require("./models/ad.model.js");
 
 const loadTestData = async () => {
   const data = [
