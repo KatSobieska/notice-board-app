@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
+const fs = require("fs");
 
 const getImageFileType = require("../utils/getImageFileType.js");
 
@@ -7,6 +8,7 @@ exports.register = async (req, res) => {
   try {
     const { login, password, phoneNumber } = req.body;
     const fileType = req.file ? await getImageFileType(req.file) : "unknown";
+    console.log(req.file);
 
     if (
       login &&
@@ -18,6 +20,7 @@ exports.register = async (req, res) => {
     ) {
       const userWithLogin = await User.findOne({ login });
       if (userWithLogin) {
+        fs.unlinkSync(req.file.path);
         return res.status(409).json({ message: "User already exists" });
       }
 
