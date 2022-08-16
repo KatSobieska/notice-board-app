@@ -3,13 +3,15 @@ const bcrypt = require("bcryptjs");
 
 exports.register = async (req, res) => {
   try {
-    const { login, password } = req.body;
+    const { login, password, phoneNumber } = req.body;
 
     if (
       login &&
       typeof login === "string" &&
       password &&
-      typeof password === "string"
+      typeof password === "string" &&
+      phoneNumber &&
+      typeof phoneNumber === "number"
     ) {
       const userWithLogin = await User.findOne({ login });
       if (userWithLogin) {
@@ -19,6 +21,7 @@ exports.register = async (req, res) => {
       const user = await User.create({
         login,
         password: await bcrypt.hash(password, 10),
+        phoneNumber,
       });
       res.status(201).send({ message: "User created " + user.login });
     } else {
