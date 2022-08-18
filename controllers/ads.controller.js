@@ -1,4 +1,6 @@
 const Ad = require("../models/ad.model.js");
+const fs = require("fs");
+const getImageFileType = require("../utils/getImageFileType");
 
 exports.getAllAds = async (req, res) => {
   try {
@@ -20,26 +22,24 @@ exports.getAdById = async (req, res) => {
 
 exports.addAd = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      publicationDate,
-      photo,
-      price,
-      location,
-      seller,
-    } = req.body;
-    const newAd = new Ad({
-      title: title,
-      description: description,
-      publicationDate: publicationDate,
-      photo: photo,
-      price: price,
-      location: location,
-      seller: seller,
-    });
-    await newAd.save();
-    res.json({ message: "OK" });
+    const { title, description, publicationDate, price, location, seller } =
+      req.body;
+    const fileType = req.file ? await getImageFileType(req.file) : "unknown";
+
+    if (["image/png", "image/jpeg", "image/gif"].includes(fileType)) {
+      const newAd = await Ad.create({
+        title,
+        description,
+        publicationDate,
+        photo: req.file.filename,
+        price,
+        location,
+        seller,
+      });
+      res.status(201).send({ message: "Add created " });
+    } else {
+      res.status(400).send({ message: "Bad request" });
+    }
   } catch (err) {
     res.status(500).json({ message: err });
   }
@@ -55,6 +55,7 @@ exports.updateAd = async (req, res) => {
     location,
     seller,
   } = req.body;
+
   try {
     const ad = await Ad.findById(req.params.id);
     if (ad) {
@@ -93,7 +94,11 @@ exports.deleteAd = async (req, res) => {
 
 exports.searchPhrase = async (req, res) => {
   try {
-    const ad = await Ad.find({ $text: { $search: req.params.searchPhrase } });
+    const ad = await Ad.find({
+      $text: {
+        $search: req.params.searchPhrase,
+      },
+    });
     res.json(ad);
   } catch (err) {
     res.status(500).json({ message: err });
