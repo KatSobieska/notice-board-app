@@ -7,7 +7,7 @@ router.get("/ads", AdController.getAllAds);
 router.get("/ads/:id", AdController.getAdById);
 router.post("/ads", authMiddleware, AdController.addAd);
 router.put("/ads/:id", authMiddleware, AdController.updateAd);
-router.delete("/ads:id", authMiddleware, AdController.deleteAd);
+router.delete("/ads/:id", authMiddleware, AdController.deleteAd);
 router.get("/ads/search/:searchPhrase", AdController.searchPhrase);
 
 module.exports = router;
