@@ -46,15 +46,10 @@ exports.addAd = async (req, res) => {
 };
 
 exports.updateAd = async (req, res) => {
-  const {
-    title,
-    description,
-    publicationDate,
-    photo,
-    price,
-    location,
-    seller,
-  } = req.body;
+  const { title, description, publicationDate, price, location, seller } =
+    req.body;
+  const fileType = req.file ? await req.file.mimetype : "unknown";
+  console.log(req.file);
 
   try {
     const ad = await Ad.findById(req.params.id);
@@ -66,7 +61,7 @@ exports.updateAd = async (req, res) => {
             title: title,
             description: description,
             publicationDate: publicationDate,
-            photo: photo,
+            photo: req.file.filename,
             price: price,
             location: location,
             seller: seller,
