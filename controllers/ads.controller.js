@@ -1,6 +1,5 @@
 const Ad = require("../models/ad.model.js");
 const fs = require("fs");
-const getImageFileType = require("../utils/getImageFileType");
 
 exports.getAllAds = async (req, res) => {
   try {
@@ -24,7 +23,8 @@ exports.addAd = async (req, res) => {
   try {
     const { title, description, publicationDate, price, location, seller } =
       req.body;
-    const fileType = req.file ? await getImageFileType(req.file) : "unknown";
+    const fileType = req.file ? await req.file.mimetype : "unknown";
+    console.log(req.file);
 
     if (["image/png", "image/jpeg", "image/gif"].includes(fileType)) {
       const newAd = await Ad.create({

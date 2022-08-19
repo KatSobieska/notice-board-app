@@ -2,12 +2,10 @@ const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
 
-const getImageFileType = require("../utils/getImageFileType.js");
-
 exports.register = async (req, res) => {
   try {
     const { login, password, phoneNumber } = req.body;
-    const fileType = req.file ? await getImageFileType(req.file) : "unknown";
+    const fileType = req.file ? await req.file.mimetype : "unknown";
     console.log(req.file);
 
     if (
