@@ -12,7 +12,12 @@ router.post(
   imageUpload.single("photo"),
   AdController.addAd
 );
-router.put("/ads/:id", authMiddleware, AdController.updateAd);
+router.put(
+  "/ads/:id",
+  authMiddleware,
+  imageUpload.single("photo"),
+  AdController.updateAd
+);
 router.delete("/ads/:id", authMiddleware, AdController.deleteAd);
 router.get("/ads/search/:searchPhrase", AdController.searchPhrase);
 
