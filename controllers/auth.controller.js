@@ -4,7 +4,7 @@ const fs = require("fs");
 
 exports.register = async (req, res) => {
   try {
-    const { login, password, phoneNumber } = req.body;
+    const { login, password, phone } = req.body;
     const fileType = req.file ? await req.file.mimetype : "unknown";
     console.log(req.file);
 
@@ -26,7 +26,7 @@ exports.register = async (req, res) => {
         login,
         password: await bcrypt.hash(password, 10),
         avatar: req.file.filename,
-        phoneNumber,
+        phone,
       });
       res.status(201).send({ message: "User created " + user.login });
     } else {
