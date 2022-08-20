@@ -11,15 +11,15 @@ const NavBar = () => {
     >
       <Container>
         <Navbar.Brand>Notice board.app</Navbar.Brand>
-        <Nav className="justiryf-content-end">
+        <Nav className="justify-content-end">
           <Nav.Link as={Link} to="/">
             Home
           </Nav.Link>
           <Nav.Link as={Link} to="/">
             Home
           </Nav.Link>
-          <Nav.Link as={Link} to="/">
-            Home
+          <Nav.Link as={Link} to="/logout">
+            Sign out
           </Nav.Link>
         </Nav>
       </Container>
