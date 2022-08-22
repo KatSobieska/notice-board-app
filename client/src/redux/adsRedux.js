@@ -34,7 +34,7 @@ export const loadAdsRequest = () => {
   return async (dispatch) => {
     dispatch(startRequest());
     try {
-      let res = await axios.get(`${API_URL}/ads`);
+      let res = await axios.get(`${API_URL}api/ads`);
       dispatch(loadAds(res.data));
       dispatch(endRequest());
     } catch (e) {
@@ -46,7 +46,7 @@ export const loadAdsRequest = () => {
 export const createAd = (ad) => async (dispatch) => {
   dispatch(startRequest());
   try {
-    const response = await fetch(`${API_URL}/ads`, {
+    const response = await fetch(`${API_URL}api/ads`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
