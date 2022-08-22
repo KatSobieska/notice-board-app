@@ -1,3 +1,5 @@
+export const getUser = ({ user }) => user;
+
 const reducerName = "users";
 const createActionName = (name) => `app/${reducerName}/${name}`;
 
