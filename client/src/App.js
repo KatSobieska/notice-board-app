@@ -4,14 +4,14 @@ import Footer from "./components/layout/Footer/Footer";
 import Header from "./components/layout/Header/Header";
 import HomePage from "./components/pages/Home/HomePage";
 import NotFound from "./components/pages/NotFound/NotFound";
-import Ad from "./components/pages/Ad/Ad";
 import Register from "./components/pages/Register/Register";
 import Login from "./components/pages/Login/Login";
 import Logout from "./components/pages/Logout/Logout";
-import AdAdd from "./components/pages/AdAdd/AdAdd";
-import AdEdit from "./components/pages/AdEdit/AdEdit";
-import AdRemove from "./components/pages/AdRemove/AdRemove";
 import Search from "./components/pages/Search/Search";
+import Ad from "./components/features/Ad/Ad";
+import AdAdd from "./components/features/AdAdd/AdAdd";
+import AdEdit from "./components/features/AdEdit/AdEdit";
+import AdRemove from "./components/features/AdRemove/AdRemove";
 
 function App() {
   return (
