@@ -5,7 +5,7 @@ const fs = require("fs");
 exports.register = async (req, res) => {
   try {
     const { login, password, phone } = req.body;
-    const fileType = req.file ? await req.file.mimetype : "unknown";
+    const fileType = req.file ? req.file.mimetype : "unknown";
     console.log(req.file);
 
     if (
