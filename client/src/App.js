@@ -8,10 +8,10 @@ import Register from "./components/pages/Register/Register";
 import Login from "./components/pages/Login/Login";
 import Logout from "./components/pages/Logout/Logout";
 import Search from "./components/pages/Search/Search";
-import Ad from "./components/features/Ad/Ad";
 import AdAdd from "./components/features/AdAdd/AdAdd";
 import AdEdit from "./components/features/AdEdit/AdEdit";
 import AdRemove from "./components/features/AdRemove/AdRemove";
+import AdPage from "./components/features/AdPage/AdPage";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/ad/:id" element={<Ad />} />
+          <Route path="/ad/:id" element={<AdPage />} />
           <Route path="/ad/add" element={<AdAdd />} />
           <Route path="/ad/edit/:id" element={<AdEdit />} />
           <Route path="/ad/remove/:id" element={<AdRemove />} />
