@@ -7,17 +7,17 @@ import AdForm from "../AdForm/AdForm";
 
 const AdEdit = () => {
   const { adId } = useParams();
-  const adsData = useSelector((state) => getAdById(state, adId));
+  const adData = useSelector((state) => getAdById(state, adId));
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (ad) => {
     dispatch(editAd({ ...ad, adId }));
     const options = {
-      method: "PU",
+      method: "PUT",
       body: ad,
     };
-    fetch(`${API_URL}/api/ads/:id`, options);
+    fetch(`${API_URL}/api/ads/${adId}`, options);
     navigate("/");
   };
 
@@ -28,13 +28,13 @@ const AdEdit = () => {
         <AdForm
           action={handleSubmit}
           actionText="Edit ad"
-          title={adsData.title}
-          description={adsData.description}
-          publicationDate={adsData.publicationDate}
-          photo={adsData.photo}
-          price={adsData.price}
-          location={adsData.location}
-          seller={adsData.seller}
+          title={adData.title}
+          description={adData.description}
+          publicationDate={adData.publicationDate}
+          photo={adData.photo}
+          price={adData.price}
+          location={adData.location}
+          seller={adData.seller}
         />
       </Col>
     </Row>
