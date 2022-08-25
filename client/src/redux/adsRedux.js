@@ -1,11 +1,10 @@
-import shortid from "shortid";
 import axios from "axios";
 import { API_URL } from "../config";
 
 export const getAllAds = ({ ads }) => ads.data;
-export const getRequest = ({ ads }) => ads.request;
-// console.log("getAllAds", getAllAds);
-export const getAdById = ({ ads }, adId) => ads.find((ad) => ad.id === adId);
+export const getRequest = ({ ads }) => ads.requests;
+export const getAdById = ({ ads }, adId) =>
+  ads.data.find((ad) => ad._id === adId);
 
 const reducerName = "ads";
 const createActionName = (name) => `app/${reducerName}/${name}`;
@@ -20,70 +19,103 @@ const ERROR_REQUEST = createActionName("ERROR_REQUEST");
 
 const LOAD_ADS = createActionName("LOAD_ADS");
 
-export const addAd = (payload) => ({ type: ADD_AD, payload });
-export const editAd = (payload) => ({ type: EDIT_AD, payload });
-export const removeAd = (payload) => ({ type: REMOVE_AD, payload });
+export const addAd = (payload) => ({ payload, type: ADD_AD });
+export const editAd = (payload) => ({ payload, type: EDIT_AD });
+export const removeAd = (payload) => ({ payload, type: REMOVE_AD });
 
-export const startRequest = () => ({ type: START_REQUEST });
-export const endRequest = () => ({ type: END_REQUEST });
-export const errorRequest = (error) => ({ error, type: ERROR_REQUEST });
+export const startRequest = (payload) => ({ payload, type: START_REQUEST });
+export const endRequest = (payload) => ({ payload, type: END_REQUEST });
+export const errorRequest = (payload) => ({ payload, type: ERROR_REQUEST });
 
-export const loadAds = (payload) => ({ type: LOAD_ADS, payload });
+export const loadAds = (payload) => ({ payload, type: LOAD_ADS });
 
 export const loadAdsRequest = () => {
   return async (dispatch) => {
-    dispatch(startRequest());
+    dispatch(startRequest({ name: "LOAD_ADS" }));
     try {
-      let res = await axios.get(`${API_URL}api/ads`);
+      const res = await axios.get(`${API_URL}/api/ads`);
       dispatch(loadAds(res.data));
-      dispatch(endRequest());
+      dispatch(endRequest({ name: "LOAD_ADS" }));
     } catch (e) {
-      dispatch(errorRequest(e.message));
+      dispatch(errorRequest({ name: "LOAD_ADS", error: e.message }));
     }
   };
 };
 
-export const createAd = (ad) => async (dispatch) => {
-  dispatch(startRequest());
+export const createAd = (ad) => {
+  return async (dispatch) => {
+    dispatch(startRequest({ name: "ADD_AD" }));
+    try {
+      const res = await axios.post(`${API_URL}/api/ads`, ad);
+      dispatch(addAd(res));
+      dispatch(endRequest({ name: "ADD_AD" }));
+    } catch (e) {
+      dispatch(errorRequest({ name: "ADD_AD", error: e.message }));
+    }
+  };
+};
+
+export const deleteAd = (id) => async (dispatch) => {
+  dispatch(startRequest({ name: "REMOVE_AD" }));
   try {
-    const response = await fetch(`${API_URL}api/ads`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(ad),
-    });
-    const newAdvert = await response.json();
-    dispatch(loadAds(newAdvert));
-  } catch (error) {
-    dispatch(errorRequest(error));
-  } finally {
-    dispatch(endRequest());
+    const res = await axios.delete(`${API_URL}/api/ads/${id}`);
+    dispatch(removeAd(res));
+    dispatch(endRequest({ name: "REMOVE_AD" }));
+  } catch (e) {
+    dispatch(errorRequest({ name: "REMOVE_AD", error: e.message }));
   }
 };
 
 const initialState = {
   data: [],
-  request: {
+  requests: {
     pending: false,
     error: null,
     success: null,
   },
 };
 
-const adsReducer = (statePart = initialState, action) => {
+export default function adsReducer(statePart = initialState, action = {}) {
   switch (action.type) {
+    case LOAD_ADS:
+      return { ...statePart, data: [...action.payload] };
     case ADD_AD:
-      return [...statePart, { ...action.payload, id: shortid() }];
+      return { ...statePart, data: [...statePart.data, action.payload] };
     case EDIT_AD:
       return statePart.map((ad) =>
         ad.id === action.payload.id ? { ...ad, ...action.payload } : ad
       );
     case REMOVE_AD:
       return statePart.filter((ad) => ad.id !== action.payload);
+
+    case START_REQUEST:
+      return {
+        ...statePart,
+        request: {
+          pending: true,
+          error: null,
+          success: false,
+        },
+      };
+    case END_REQUEST:
+      return {
+        ...statePart,
+        request: {
+          pending: false,
+          error: null,
+          success: true,
+        },
+      };
+    case ERROR_REQUEST:
+      return {
+        ...statePart,
+        request: {
+          pending: false,
+          error: action.payload.error,
+          success: false,
+        },
+      };
     default:
       return statePart;
   }
-};
-
-export default adsReducer;
+}
