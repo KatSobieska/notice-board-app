@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { createAd } from "../../../redux/adsRedux";
 
 const AdForm = ({ action, actionText, ...props }) => {
-  const dispatch = useDispatch();
   const [title, setTitle] = useState(props.title || "");
   const [description, setDescription] = useState(props.description || "");
   const [publicationDate, setPublicationDate] = useState(
@@ -17,17 +14,15 @@ const AdForm = ({ action, actionText, ...props }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      createAd({
-        title,
-        description,
-        publicationDate,
-        photo,
-        price,
-        location,
-        seller,
-      })
-    );
+    action({
+      title,
+      description,
+      publicationDate,
+      photo,
+      price,
+      location,
+      seller,
+    });
   };
 
   return (
