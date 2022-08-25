@@ -9,7 +9,11 @@ const LOG_OUT = createActionName("LOG_OUT");
 export const logIn = (payload) => ({ type: LOG_IN, payload });
 export const logOut = (payload) => ({ type: LOG_OUT, payload });
 
-const usersReducer = (statePart = null, action) => {
+const initialState = {
+  user: null,
+};
+
+const usersReducer = (statePart = initialState, action) => {
   switch (action.type) {
     case LOG_IN:
       return action.payload;
