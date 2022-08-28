@@ -5,7 +5,7 @@ import usersReducer from "./usersRedux";
 
 const subreducers = {
   ads: adsReducer,
-  users: usersReducer,
+  user: usersReducer,
 };
 
 const rootReducer = combineReducers(subreducers);
