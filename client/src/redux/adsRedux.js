@@ -3,8 +3,7 @@ import { API_URL } from "../config";
 
 export const getAllAds = ({ ads }) => ads.data;
 export const getRequest = ({ ads }) => ads.requests;
-export const getAdById = ({ ads }, adId) =>
-  ads.data.find((ad) => ad._id === adId);
+export const getAdById = ({ ads }, id) => ads.data.find((ad) => ad._id === id);
 
 const reducerName = "ads";
 const createActionName = (name) => `app/${reducerName}/${name}`;
