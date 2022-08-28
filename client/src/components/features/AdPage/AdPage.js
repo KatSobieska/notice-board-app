@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Modal, Button, Row, Col } from "react-bootstrap";
+import { Modal, Button, Row, Col, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { getAdById, removeAd } from "../../../redux/adsRedux";
 import { Link } from "react-router-dom";
 import { IMAGES_URL } from "../../../config";
@@ -9,8 +9,8 @@ import { API_URL } from "../../../config";
 import { getUser } from "../../../redux/usersRedux";
 
 const AdPage = () => {
-  const { adId } = useParams();
-  const adData = useSelector((state) => getAdById(state, adId));
+  const { id } = useParams();
+  const adData = useSelector((state) => getAdById(state, id));
   const user = useSelector(getUser);
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
@@ -26,17 +26,17 @@ const AdPage = () => {
   };
 
   const handleRemove = () => {
-    dispatch(removeAd(adId));
+    dispatch(removeAd(id));
 
     const options = {
       method: "DELETE",
-      body: adId,
+      body: id,
     };
-    fetch(`${API_URL}/api/ads/${adId}`, options);
+    fetch(`${API_URL}/api/ads/${id}`, options);
     navigate("/");
   };
 
-  //   if (!adData) return <Navigate to="/" />;
+  if (!adData) return <Navigate to="/" />;
   return (
     <div>
       <Modal show={show} onHide={handleClose}>
@@ -58,10 +58,9 @@ const AdPage = () => {
       </Modal>
       <Row className="justify-content-md-center">
         <Col md={6} className="d-flex justify-content-between">
-          <h1>title</h1>
           {user && user.login === adData.login && (
             <span>
-              <Link to={"/ad/edit/" + adId}>
+              <Link to={"/ad/edit/" + id}>
                 <Button
                   variant="outline-info"
                   size="sd"
@@ -81,30 +80,22 @@ const AdPage = () => {
       </Row>
       <Row className="justify-content-md-center">
         <Col md={6}>
-          <p>
-            <b>Seller: </b>
-            Seller
-          </p>
-          <p>
-            <b>Publication Date: </b>publicationDate
-          </p>
-          <p>
-            <b>Title: </b>
-            Title
-          </p>
-          <p>
-            <b>Description: </b>
-            Description
-          </p>
-          <p>
-            <b>Price: </b>
-            Price
-          </p>
-          <p>
-            <b>Location: </b>
-            Location
-          </p>
-          {/* <p src={IMAGES_URL + adData.photo} className="mb-2" /> */}
+          <Card>
+            <Card.Body className="">
+              <Card.Img
+                variant="top"
+                src={IMAGES_URL + adData.photo}
+                className="mb-2"
+                style={{ height: "10rem", objectFit: "cover" }}
+              />
+              <Card.Title>{adData.title}</Card.Title>
+              <Card.Text>{adData.description}</Card.Text>
+              <Card.Text>{adData.seller}</Card.Text>
+              <Card.Text>{adData.publicationDate}</Card.Text>
+              <Card.Text>{adData.price}</Card.Text>
+              <Card.Text>{adData.location}</Card.Text>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
     </div>
