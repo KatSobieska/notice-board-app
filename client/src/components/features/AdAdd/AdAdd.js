@@ -9,7 +9,7 @@ const AdAdd = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (ad) => {
-    dispatch(createAd(ad));
+    console.log("ad", ad);
     const fd = new FormData();
     fd.append("title", ad.title);
     fd.append("description", ad.description);
@@ -24,7 +24,14 @@ const AdAdd = () => {
       body: fd,
       credentials: "include",
     };
-    fetch(`${API_URL}/api/ads`, options);
+    fetch(`${API_URL}/api/ads`, options)
+      .then(() => {
+        dispatch(createAd(ad));
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     navigate("/");
   };
 
