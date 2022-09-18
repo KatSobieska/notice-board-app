@@ -99,7 +99,7 @@ export default function reducer(statePart = initialState, action = {}) {
     case EDIT_AD:
       return [
         ...statePart.map((ad) =>
-          ad.id === action.payload.id ? action.payload : ad
+          ad.id === action.payload.id ? { ...ad, ...action.payload } : ad
         ),
       ];
     case REMOVE_AD:
