@@ -2,22 +2,29 @@ import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../../config";
-import { editAd, getAdById } from "../../../redux/adsRedux";
+import { getAdById, updateAd } from "../../../redux/adsRedux";
 import AdForm from "../AdForm/AdForm";
 
 const AdEdit = () => {
-  const { adId } = useParams();
-  const adData = useSelector((state) => getAdById(state, adId));
+  const { id } = useParams();
+  const adData = useSelector((state) => getAdById(state, id));
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (ad) => {
-    dispatch(editAd({ ...ad, adId }));
     const options = {
       method: "PUT",
       body: ad,
+      credentials: "include",
     };
-    fetch(`${API_URL}/api/ads/${adId}`, options);
+    fetch(`${API_URL}/api/ads/${id}`, options)
+      .then(() => {
+        dispatch(updateAd({ ...ad, id }));
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     navigate("/");
   };
 
@@ -35,6 +42,7 @@ const AdEdit = () => {
           price={adData.price}
           location={adData.location}
           seller={adData.seller}
+          id={id}
         />
       </Col>
     </Row>
