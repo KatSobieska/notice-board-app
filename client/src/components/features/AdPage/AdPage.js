@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Modal, Button, Row, Col, Card } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { getAdById, removeAd } from "../../../redux/adsRedux";
+import { useSelector } from "react-redux";
+import { Navigate, useParams } from "react-router-dom";
+import { getAdById } from "../../../redux/adsRedux";
 import { Link } from "react-router-dom";
 import { IMAGES_URL } from "../../../config";
-import { API_URL } from "../../../config";
 import { getUser } from "../../../redux/usersRedux";
 
 const AdPage = () => {
@@ -13,27 +12,14 @@ const AdPage = () => {
   const adData = useSelector((state) => getAdById(state, id));
   const user = useSelector(getUser);
   const [show, setShow] = useState(false);
-  const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
-  const handleShow = () => {
+  const handleShow = (e) => {
+    e.preventDefault();
     setShow(true);
   };
 
   const handleClose = () => {
     setShow(false);
-  };
-
-  const handleRemove = () => {
-    dispatch(removeAd(id));
-
-    const options = {
-      method: "DELETE",
-      body: id,
-    };
-    fetch(`${API_URL}/api/ads/${id}`, options);
-    navigate("/");
   };
 
   if (!adData) return <Navigate to="/" />;
@@ -51,14 +37,14 @@ const AdPage = () => {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleRemove}>
+          <Button variant="danger" to={`/ad/remove/${id}`} as={Link}>
             Remove
           </Button>
         </Modal.Footer>
       </Modal>
       <Row className="justify-content-md-center">
-        <Col md={6} className="d-flex justify-content-between">
-          {user && user.login === adData.login && (
+        <Col md={6} className="d-flex justify-content-end">
+          {user && user.login === adData.seller && (
             <span>
               <Link to={"/ad/edit/" + id}>
                 <Button
