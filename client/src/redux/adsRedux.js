@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_URL } from "../config";
+import shortid from "shortid";
 
 export const getAllAds = ({ ads }) => ads.data;
 export const getRequest = ({ ads }) => ads.requests;
@@ -54,6 +55,17 @@ export const createAd = (ad) => {
   };
 };
 
+export const updateAd = (ad) => async (dispatch) => {
+  dispatch(startRequest({ name: "EDIT_AD" }));
+  try {
+    const res = await axios.put(`${API_URL}/api/ads/${ad.id}`);
+    dispatch(editAd(res));
+    dispatch(endRequest({ name: "EDIT_AD" }));
+  } catch (e) {
+    dispatch(errorRequest({ name: "EDIT_AD", error: e.message }));
+  }
+};
+
 export const deleteAd = (id) => async (dispatch) => {
   dispatch(startRequest({ name: "REMOVE_AD" }));
   try {
@@ -74,19 +86,24 @@ const initialState = {
   },
 };
 
-export default function adsReducer(statePart = initialState, action = {}) {
+export default function reducer(statePart = initialState, action = {}) {
   switch (action.type) {
     case LOAD_ADS:
       return { ...statePart, data: [...action.payload] };
     case ADD_AD:
-      return { ...statePart, data: [...statePart.data, action.payload] };
+      return {
+        ...statePart,
+        data: [...statePart.data, action.payload],
+        id: shortid(),
+      };
     case EDIT_AD:
-      return statePart.map((ad) =>
-        ad.id === action.payload.id ? { ...ad, ...action.payload } : ad
-      );
+      return [
+        ...statePart.map((ad) =>
+          ad.id === action.payload.id ? action.payload : ad
+        ),
+      ];
     case REMOVE_AD:
-      return statePart.filter((ad) => ad.id !== action.payload);
-
+      return [...statePart.filter((ad) => ad.id !== action.payload.id)];
     case START_REQUEST:
       return {
         ...statePart,
