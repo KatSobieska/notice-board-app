@@ -29,14 +29,15 @@ app.use(
     resave: false,
     saveUninitialized: false,
     mongoUrl: process.env.DB_URL,
-    cookie: {
-      secure: process.env.NODE_ENV == "production",
-    },
+    // cookie: {
+    //   secure: process.env.NODE_ENV == "production",
+    // },
   })
 );
 
 app.use(express.static(path.join(__dirname, "/client/build")));
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, "/uploads/")));
 
 app.use("/api", require("./routes/ads.routes"));
 app.use("/auth", require("./routes/auth.routes"));
