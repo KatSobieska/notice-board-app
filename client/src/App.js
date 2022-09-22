@@ -7,11 +7,11 @@ import NotFound from "./components/pages/NotFound/NotFound";
 import Register from "./components/pages/Register/Register";
 import Login from "./components/pages/Login/Login";
 import Logout from "./components/pages/Logout/Logout";
-import Search from "./components/pages/Search/Search";
 import AdAdd from "./components/features/AdAdd/AdAdd";
 import AdEdit from "./components/features/AdEdit/AdEdit";
 import AdRemove from "./components/features/AdRemove/AdRemove";
 import AdPage from "./components/features/AdPage/AdPage";
+import Search from "./components/features/Search/Search";
 
 function App() {
   return (
