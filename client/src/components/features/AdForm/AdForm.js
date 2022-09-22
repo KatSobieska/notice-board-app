@@ -9,11 +9,9 @@ const AdForm = ({ action, actionText, ...props }) => {
   const id = props.id;
   const [title, setTitle] = useState(props.title || "");
   const [description, setDescription] = useState(props.description || "");
-  const [publicationDate, setPublicationDate] = useState(new Date() || "");
   const [photo, setPhoto] = useState(props.photo || "");
   const [price, setPrice] = useState(props.price || "");
   const [location, setLocation] = useState(props.location || "");
-  const [seller, setSeller] = useState(props.seller || "");
   const user = useSelector(getUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,7 +21,7 @@ const AdForm = ({ action, actionText, ...props }) => {
     action({
       title,
       description,
-      publicationDate: new Date(),
+      publicationDate: new Date().toJSON().slice(0, 10).replace(/-/g, "/"),
       photo,
       price,
       location,
@@ -55,12 +53,6 @@ const AdForm = ({ action, actionText, ...props }) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <Form.Label>Publication Date</Form.Label>
-            <Form.Control
-              className="mb-2"
-              type="date"
-              onChange={(e) => setPublicationDate(e.target.value)}
-            />
             <Form.Label>Photo</Form.Label>
             <Form.Control
               className="mb-2"
@@ -82,14 +74,6 @@ const AdForm = ({ action, actionText, ...props }) => {
               placeholder="Enter location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-            />
-            <Form.Label>Seller</Form.Label>
-            <Form.Control
-              className="mb-2"
-              type="text"
-              placeholder="Enter seller"
-              value={seller}
-              onChange={(e) => setSeller(e.target.value)}
             />
           </Form.Group>
           <Button type="submit">Submit</Button>
