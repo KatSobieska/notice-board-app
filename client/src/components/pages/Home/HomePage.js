@@ -1,10 +1,10 @@
-import { Button, Container, Row, Col } from "react-bootstrap";
+import { Button, Container, Row, Col, Form } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getAllAds, loadAdsRequest } from "../../../redux/adsRedux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUser } from "../../../redux/usersRedux";
 
 import Ads from "../../features/Ads/Ads";
@@ -13,6 +13,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const ads = useSelector(getAllAds);
   const user = useSelector(getUser);
+  const [searchPhrase, setSearchPhrase] = useState("");
 
   useEffect(() => {
     dispatch(loadAdsRequest());
@@ -35,6 +36,21 @@ const HomePage = () => {
               </Button>
             </Link>
           )}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Form className="d-flex justify-content-center">
+            <Form.Control
+              type="search"
+              style={{ width: "25rem" }}
+              className="me-4"
+              onChange={(e) => setSearchPhrase(e.target.value)}
+            />
+            <Button as={Link} to={"/search/" + searchPhrase}>
+              Search
+            </Button>
+          </Form>
         </Col>
       </Row>
       <Ads ads={ads} />
