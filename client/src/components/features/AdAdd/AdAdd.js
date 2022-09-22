@@ -9,7 +9,6 @@ const AdAdd = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (ad) => {
-    console.log("ad", ad);
     const fd = new FormData();
     fd.append("title", ad.title);
     fd.append("description", ad.description);
