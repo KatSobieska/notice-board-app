@@ -12,6 +12,7 @@ const createActionName = (name) => `app/${reducerName}/${name}`;
 const ADD_AD = createActionName("ADD_AD");
 const EDIT_AD = createActionName("EDIT_AD");
 const REMOVE_AD = createActionName("REMOVE_AD");
+const SEARCH_AD = createActionName("SEARCH_AD");
 
 const START_REQUEST = createActionName("START_REQUEST");
 const END_REQUEST = createActionName("END_REQUEST");
@@ -22,6 +23,10 @@ const LOAD_ADS = createActionName("LOAD_ADS");
 export const addAd = (payload) => ({ payload, type: ADD_AD });
 export const editAd = (payload) => ({ payload, type: EDIT_AD });
 export const removeAd = (payload) => ({ payload, type: REMOVE_AD });
+export const searchAd = (searchPhrase) => ({
+  payload: { searchPhrase },
+  type: SEARCH_AD,
+});
 
 export const startRequest = (payload) => ({ payload, type: START_REQUEST });
 export const endRequest = (payload) => ({ payload, type: END_REQUEST });
@@ -74,6 +79,17 @@ export const deleteAd = (id) => async (dispatch) => {
     dispatch(endRequest({ name: "REMOVE_AD" }));
   } catch (e) {
     dispatch(errorRequest({ name: "REMOVE_AD", error: e.message }));
+  }
+};
+
+export const findAdBySearchPhrase = (searchPhrase) => async (dispatch) => {
+  dispatch(startRequest({ name: "SEARCH_AD" }));
+  try {
+    const res = await axios.get(`${API_URL}/api/ads/search/${searchPhrase}`);
+    dispatch(loadAds(res.data));
+    dispatch(endRequest({ name: "SEARCH_AD" }));
+  } catch (e) {
+    dispatch(errorRequest({ name: "SEARCH_AD", error: e.message }));
   }
 };
 
