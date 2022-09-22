@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { findAdBySearchPhrase, getAllAds } from "../../../redux/adsRedux";
 import Ads from "../Ads/Ads";
 
