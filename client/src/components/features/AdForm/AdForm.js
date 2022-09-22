@@ -9,9 +9,11 @@ const AdForm = ({ action, actionText, ...props }) => {
   const id = props.id;
   const [title, setTitle] = useState(props.title || "");
   const [description, setDescription] = useState(props.description || "");
+  const [publicationDate, setPublicationDate] = useState(new Date() || "");
   const [photo, setPhoto] = useState(props.photo || "");
   const [price, setPrice] = useState(props.price || "");
   const [location, setLocation] = useState(props.location || "");
+  const [seller, setSeller] = useState(props.seller || "");
   const user = useSelector(getUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
