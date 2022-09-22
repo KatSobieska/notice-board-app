@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getUser } from "../../../redux/usersRedux";
+import { loadAdsRequest } from "../../../redux/adsRedux";
 
 const AdForm = ({ action, actionText, ...props }) => {
   const id = props.id;
@@ -13,19 +15,23 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [location, setLocation] = useState(props.location || "");
   const [seller, setSeller] = useState(props.seller || "");
   const user = useSelector(getUser);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     action({
       title,
       description,
-      publicationDate,
+      publicationDate: new Date(),
       photo,
       price,
       location,
       seller: user.login,
       id,
     });
+    navigate("/");
+    dispatch(loadAdsRequest());
   };
 
   return (
@@ -59,7 +65,7 @@ const AdForm = ({ action, actionText, ...props }) => {
             <Form.Control
               className="mb-2"
               type="file"
-              onChange={(e) => setPhoto(e.target.files[0].name)}
+              onChange={(e) => setPhoto(e.target.files[0])}
             />
             <Form.Label>Price</Form.Label>
             <Form.Control
