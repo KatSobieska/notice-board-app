@@ -8,11 +8,11 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-connectToDB();
-
 const server = app.listen(process.env.PORT || 8000, () => {
   console.log("Server is running on port: 8000");
 });
+
+connectToDB();
 
 app.use(
   cors({
