@@ -8,12 +8,6 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-const server = app.listen(process.env.PORT || 8000, () => {
-  console.log("Server is running on port: 8000");
-});
-
-connectToDB();
-
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://localhost:8000"],
@@ -49,6 +43,12 @@ app.get("/", (req, res) => {
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found..." });
+});
+
+connectToDB();
+
+const server = app.listen(process.env.PORT || 8000, () => {
+  console.log("Server is running on port: 8000");
 });
 
 module.exports = server;
