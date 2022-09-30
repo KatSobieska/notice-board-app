@@ -15,6 +15,8 @@ app.use(
   })
 );
 
+connectToDB();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
@@ -44,8 +46,6 @@ app.get("*", (req, res) => {
 app.use((req, res) => {
   res.status(404).json({ message: "Not found..." });
 });
-
-connectToDB();
 
 const server = app.listen(process.env.PORT || 8000, () => {
   console.log("Server is running on port: 8000");
