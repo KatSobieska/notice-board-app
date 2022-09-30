@@ -8,14 +8,14 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+connectToDB();
+
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://localhost:8000"],
     credentials: true,
   })
 );
-
-connectToDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
