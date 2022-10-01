@@ -60,7 +60,6 @@ app.use(
     store: store,
     resave: false,
     saveUninitialized: false,
-    mongoUrl: process.env.DB_URL,
     cookie: {
       secure: process.env.NODE_ENV == "production",
     },
