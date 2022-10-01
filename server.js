@@ -1,14 +1,49 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const connectToDB = require("./db");
+
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
+const loadTestData = require("./testData");
+
+const NODE_ENV = process.env.NODE_ENV;
+const NBA_USERNAME = process.env.NBA_USERNAME;
+const NBA_PASSWORD = process.env.NBA_PASSWORD;
+
+let dbUri = "";
+
+if (NODE_ENV === "production")
+  dbUri = `mongodb+srv://${NBA_USERNAME}:${NBA_PASSWORD}@cluster0.ii8kz.mongodb.net/noticeBoardDB`;
+else if (NODE_ENV === "test")
+  dbUri = "mongodb://localhost:27017/noticeBoardDBtest";
+else dbUri = "mongodb://localhost:27017/noticeBoardDB";
 
 const app = express();
 
-connectToDB();
+const server = app.listen(process.env.PORT || 8000, () => {
+  console.log("Server is running on port: 8000");
+});
+
+mongoose.connect(dbUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+
+const store = MongoStore.create({
+  mongoUrl: dbUri,
+  collection: "sessions",
+});
+
+db.once("open", () => {
+  console.log("Connected to the database");
+  loadTestData();
+});
+db.on("error", (err) => {
+  console.log("Error" + err);
+});
 
 app.use(
   cors({
@@ -22,7 +57,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
     secret: process.env.SECRET_KEY,
-    store: MongoStore.create(mongoose.connection),
+    store: store,
     resave: false,
     saveUninitialized: false,
     mongoUrl: process.env.DB_URL,
@@ -45,10 +80,6 @@ app.get("*", (req, res) => {
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found..." });
-});
-
-const server = app.listen(process.env.PORT || 8000, () => {
-  console.log("Server is running on port: 8000");
 });
 
 module.exports = server;
