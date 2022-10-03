@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config";
-import { createAd } from "../../../redux/adsRedux";
+import { createAd, loadAdsRequest } from "../../../redux/adsRedux";
 import AdForm from "../AdForm/AdForm";
 
 const AdAdd = () => {
@@ -33,6 +34,10 @@ const AdAdd = () => {
       });
     navigate("/");
   };
+
+  useEffect(() => {
+    dispatch(loadAdsRequest());
+  }, [dispatch]);
 
   return <AdForm action={handleSubmit} actionText="Add ad" />;
 };
