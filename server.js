@@ -60,9 +60,6 @@ app.use(
     store: store,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV == "production",
-    },
   })
 );
 
