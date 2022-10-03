@@ -33,11 +33,8 @@ const AdAdd = () => {
         console.log(error);
       });
     navigate("/");
-  };
-
-  useEffect(() => {
     dispatch(loadAdsRequest());
-  }, [dispatch]);
+  };
 
   return <AdForm action={handleSubmit} actionText="Add ad" />;
 };
