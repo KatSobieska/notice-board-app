@@ -120,6 +120,15 @@ export default function reducer(statePart = initialState, action = {}) {
       ];
     case REMOVE_AD:
       return [...statePart.filter((ad) => ad.id !== action.payload.id)];
+    case SEARCH_AD:
+      return {
+        ...statePart,
+        data: [
+          ...statePart.data.filter((ad) =>
+            ad.title.includes(action.payload.searchPhase)
+          ),
+        ],
+      };
     case START_REQUEST:
       return {
         ...statePart,
