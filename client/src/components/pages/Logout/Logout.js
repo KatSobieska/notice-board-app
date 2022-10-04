@@ -9,11 +9,16 @@ const Logout = () => {
   useEffect(() => {
     const options = {
       method: "DELETE",
+      credentials: "include",
     };
-    fetch(`${API_URL}/logout`, options).then(() => {
-      dispatch(logOut());
-    });
-  }, [dispatch]);
+    fetch(`${API_URL}/auth/logout`, options)
+      .then(() => {
+        dispatch(logOut());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
 
   return null;
 };
