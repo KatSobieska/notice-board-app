@@ -28,13 +28,11 @@ const AdEdit = () => {
     };
     fetch(`${API_URL}/api/ads/${id}`, options)
       .then(() => {
-        dispatch(updateAd({ ...ad, id }));
         navigate("/");
       })
       .catch((error) => {
         console.log(error);
       });
-    navigate("/");
   };
 
   return (
