@@ -1,14 +1,13 @@
 import { Col, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../../config";
-import { getAdById, updateAd } from "../../../redux/adsRedux";
+import { getAdById } from "../../../redux/adsRedux";
 import AdForm from "../AdForm/AdForm";
 
 const AdEdit = () => {
   const { id } = useParams();
   const adData = useSelector((state) => getAdById(state, id));
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (ad) => {
