@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import { getUser } from "../../../redux/usersRedux";
-import { loadAdsRequest } from "../../../redux/adsRedux";
 
 const AdForm = ({ action, actionText, ...props }) => {
   const id = props.id;
@@ -15,8 +14,6 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [location, setLocation] = useState(props.location || "");
   const [seller, setSeller] = useState(props.seller || "");
   const user = useSelector(getUser);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,8 +27,6 @@ const AdForm = ({ action, actionText, ...props }) => {
       seller: user.login,
       id,
     });
-    navigate("/");
-    dispatch(loadAdsRequest());
   };
 
   return (

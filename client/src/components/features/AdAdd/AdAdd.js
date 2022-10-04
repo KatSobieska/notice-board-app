@@ -1,11 +1,8 @@
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config";
-import { createAd, loadAdsRequest } from "../../../redux/adsRedux";
 import AdForm from "../AdForm/AdForm";
 
 const AdAdd = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (ad) => {
@@ -25,14 +22,11 @@ const AdAdd = () => {
     };
     fetch(`${API_URL}/api/ads`, options)
       .then(() => {
-        dispatch(createAd(ad));
         navigate("/");
       })
       .catch((error) => {
         console.log(error);
       });
-    navigate("/");
-    dispatch(loadAdsRequest());
   };
 
   return <AdForm action={handleSubmit} actionText="Add ad" />;
